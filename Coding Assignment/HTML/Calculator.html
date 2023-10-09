@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Calculator</title>
+    <style>
+        /* Add some basic styling for the calculator */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #calculator {
+            width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        input[type="text"] {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 5px;
+            font-size: 18px;
+        }
+        button {
+            width: 50px;
+            height: 50px;
+            font-size: 18px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="calculator">
+        <h2>Basic Calculator</h2>
+        <input type="text" id="result" disabled>
+        <div>
+            <button onclick="appendToResult('1')">1</button>
+            <button onclick="appendToResult('2')">2</button>
+            <button onclick="appendToResult('3')">3</button>
+            <button onclick="performOperation('+')">+</button>
+        </div>
+        <div>
+            <button onclick="appendToResult('4')">4</button>
+            <button onclick="appendToResult('5')">5</button>
+            <button onclick="appendToResult('6')">6</button>
+            <button onclick="performOperation('-')">-</button>
+        </div>
+        <div>
+            <button onclick="appendToResult('7')">7</button>
+            <button onclick="appendToResult('8')">8</button>
+            <button onclick="appendToResult('9')">9</button>
+            <button onclick="performOperation('*')">*</button>
+        </div>
+        <div>
+            <button onclick="appendToResult('0')">0</button>
+            <button onclick="clearResult()">C</button>
+            <button onclick="calculateResult()">=</button>
+            <button onclick="performOperation('/')">/</button>
+        </div>
+    </div>
+
+    <script>
+        let currentInput = "";
+        let currentOperation = "";
+        let previousInput = "";
+
+        function appendToResult(value) {
+            currentInput += value;
+            document.getElementById("result").value = currentInput;
+        }
+
+        function performOperation(operator) {
+            if (currentInput !== "") {
+                previousInput = currentInput;
+                currentInput = "";
+                currentOperation = operator;
+            }
+        }
+
+        function clearResult() {
+            currentInput = "";
+            previousInput = "";
+            currentOperation = "";
+            document.getElementById("result").value = "";
+        }
+
+        function calculateResult() {
+            if (currentInput !== "" && previousInput !== "") {
+                const num1 = parseFloat(previousInput);
+                const num2 = parseFloat(currentInput);
+                let result = 0;
+
+                switch (currentOperation) {
+                    case '+':
+                        result = num1 + num2;
+                        break;
+                    case '-':
+                        result = num1 - num2;
+                        break;
+                    case '*':
+                        result = num1 * num2;
+                        break;
+                    case '/':
+                        if (num2 !== 0) {
+                            result = num1 / num2;
+                        } else {
+                            alert("Error: Division by zero");
+                            clearResult();
+                            return;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                clearResult();
+                currentInput = result.toString();
+                document.getElementById("result").value = currentInput;
+            }
+        }
+    </script>
+</body>
+</html>
